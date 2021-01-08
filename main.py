@@ -2,7 +2,7 @@ from tkinter import Tk,Button,Label,Frame,Entry,OptionMenu,StringVar,PhotoImage,
 from pickle import load,dump
 from math import ceil
 from tkvalidate import float_validate
-
+import os
 
 
 
@@ -19,6 +19,18 @@ def Show_Developers():
     window.iconbitmap('download.ico')
     newlabel = Label(window, text = "Tamojit Das\nArshia Mitra\nAnunita Bhattacharya\nArya Bhattacharya")
     newlabel.pack()
+
+def Undo():
+    try:
+        os.remove('Database.dat')
+    except:
+        pass
+    try:
+        os.rename('ini.dat','Database.dat')
+    except:
+        pass
+
+    root.destroy()
 
 def refresh_values():
     global EXPENSES,TARGET_CYLINDER,DATABASE,PROFIT_PER_CYLINDER
@@ -81,6 +93,14 @@ def load_db():
 
 def write_db():
     global DATABASE
+    try:
+        os.remove('ini.dat')
+    except:
+        pass
+    try:
+        os.rename('Database.dat','ini.dat')
+    except:
+        pass
     f=open('Database.dat','wb')
     dump(DATABASE,f)
     f.close()
@@ -253,7 +273,7 @@ Expected_Time.place(x=400,y=150)
 
 
 Custom_Button(analysis_frame,'Home',fourth_home).place(x=70,y=350)
-Custom_Button(analysis_frame,'Predict B.E.T in months',predict_time).place(x=280,y=350)
+Custom_Button(analysis_frame,'Predict Break Even Time in months',predict_time).place(x=180,y=350)
 Custom_Button(analysis_frame,'Predict Sales/day',predict_sales).place(x=430,y=350)
 
 
@@ -300,6 +320,8 @@ Profit_Per_Cylinder.insert(index=0, s=str(PROFIT_PER_CYLINDER))
 
 
 Custom_Button(root,'Developers',Show_Developers).place(x=50,y=500)
+
+Custom_Button(root,'Undo',Undo).place(x=610,y=500)
 
 main_frame.place(x=50,y=80)
 
