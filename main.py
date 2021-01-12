@@ -3,6 +3,8 @@ from pickle import load,dump
 from math import ceil
 from tkvalidate import float_validate
 import os
+from time import sleep
+from threading import Thread
 
 
 
@@ -13,12 +15,23 @@ root.title("Profitability of LPG Distributership")
 root.resizable(0,0)
 root.iconbitmap('download.ico')
 
-def Show_Developers():
-    window = Toplevel()
-    window.geometry('150x70')
-    window.iconbitmap('download.ico')
-    newlabel = Label(window, text = "Tamojit Das\nArshia Mitra\nAnunita Bhattacharya\nArya Bhattacharya")
-    newlabel.pack()
+def Show_Error(msg):
+    Error.config(text=msg)
+    sleep(2)
+    Error.config(text='')
+
+def Show_About():
+    try:
+        window = Toplevel()
+        window.geometry('150x70')
+        window.iconbitmap('download.ico')
+        window.resizable(0,0)
+        window.title('About')
+        newlabel = Label(window, text = "Tamojit Das\nArshia Mitra\nAnunita Bhattacharya\nArya Bhattacharya")
+        newlabel.pack()
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
+
 
 def Undo():
     try:
@@ -34,49 +47,73 @@ def Undo():
 
 def refresh_values():
     global EXPENSES,TARGET_CYLINDER,DATABASE,PROFIT_PER_CYLINDER
-    PROFIT_PER_CYLINDER=int(Profit_Per_Cylinder.get())
-    Expense_Label.config(text=str(EXPENSES))
-    TARGET_CYLINDER=ceil(EXPENSES/PROFIT_PER_CYLINDER)
-    Target_Cylinder_Label.config(text=str(TARGET_CYLINDER))
-    DATABASE['EXPENSES']=EXPENSES
-    DATABASE['TARGET_CYLINDER']=TARGET_CYLINDER
-    DATABASE['PROFIT_PER_CYLINDER']=PROFIT_PER_CYLINDER
+    try:
+        PROFIT_PER_CYLINDER=int(Profit_Per_Cylinder.get())
+        Expense_Label.config(text=str(EXPENSES))
+        TARGET_CYLINDER=ceil(EXPENSES/PROFIT_PER_CYLINDER)
+        Target_Cylinder_Label.config(text=str(TARGET_CYLINDER))
+        DATABASE['EXPENSES']=EXPENSES
+        DATABASE['TARGET_CYLINDER']=TARGET_CYLINDER
+        DATABASE['PROFIT_PER_CYLINDER']=PROFIT_PER_CYLINDER
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 
 def one_home():
-    fixed_frame.place_forget()
-    main_frame.place(x=50,y=80)
+    try:
+        fixed_frame.place_forget()
+        main_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def second_home():
-    monthly_frame.place_forget()
-    main_frame.place(x=50,y=80)
+    try:
+        monthly_frame.place_forget()
+        main_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def third_home():
-    recovery_frame.place_forget()
-    main_frame.place(x=50,y=80)
+    try:
+        recovery_frame.place_forget()
+        main_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def fourth_home():
-    analysis_frame.place_forget()
-    main_frame.place(x=50,y=80)
+    try:
+        analysis_frame.place_forget()
+        main_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def add_expense_main_frame():
     global DATABASE
-    if DATABASE=={}:
-        main_frame.place_forget()
-        fixed_frame.place(x=50,y=80)
-    else:
-        main_frame.place_forget()
-        monthly_frame.place(x=50,y=80)
+    try:
+        if DATABASE=={}:
+            main_frame.place_forget()
+            fixed_frame.place(x=50,y=80)
+        else:
+            main_frame.place_forget()
+            monthly_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def add_recovery_main_frame():
     global DATABASE
-    if True:
-        main_frame.place_forget()
-        recovery_frame.place(x=50,y=80)
+    try:
+        if True:
+            main_frame.place_forget()
+            recovery_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def add_analysis_main_frame():
-    main_frame.place_forget()
-    analysis_frame.place(x=50,y=80)
+    try:
+        main_frame.place_forget()
+        analysis_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def load_db():
     global DATABASE,EXPENSES,TARGET_CYLINDER,PROFIT_PER_CYLINDER
@@ -101,9 +138,13 @@ def write_db():
         os.rename('Database.dat','ini.dat')
     except:
         pass
-    f=open('Database.dat','wb')
-    dump(DATABASE,f)
-    f.close()
+
+    try:
+        f=open('Database.dat','wb')
+        dump(DATABASE,f)
+        f.close()
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def predict_time():
     try:
@@ -131,7 +172,7 @@ def Custom_Spinbox(root):
 
 def Custom_Entry(root):
     entry=Entry(root,bg='white',bd=1,relief='groove')
-    float_validate(entry,from_=0,to=10000000)
+    float_validate(entry,from_=0,to=100000000)
     return entry
 
 def Custom_Label(root,display_text):
@@ -149,37 +190,44 @@ def Custom_Button(root,txt,func):
 
 def one_add():
     global EXPENSES
-    total=  float(Office.get()) \
-            +float(Office_Extras.get()) \
-            +float(Advertisement.get()) \
-            +float(Office_License.get()) \
-            +Dict[var.get()]
+    try:
+        total=  float(Office.get()) \
+                +float(Office_Extras.get()) \
+                +float(Advertisement.get()) \
+                +float(Office_License.get()) \
+                +Dict[var.get()]
 
 
-    EXPENSES+=total
-    refresh_values()
-    write_db()
-    monthly_frame.place(x=50,y=80)
-    fixed_frame.place_forget()
+        EXPENSES+=total
+        refresh_values()
+        write_db()
+        monthly_frame.place(x=50,y=80)
+        fixed_frame.place_forget()
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def add_two():
     global EXPENSES
-    total=float(Employees_Salary.get()) + float(Electric_Bill.get()) + float(Transportation.get()) + float(License_Renew.get()) + float(Mobile_Internet.get())
-    EXPENSES+=total
-    monthly_frame.place_forget()
-    refresh_values()
-    write_db()
-    main_frame.place(x=50,y=80)
-
+    try:
+        total=float(Employees_Salary.get()) + float(Electric_Bill.get()) + float(Transportation.get()) + float(License_Renew.get()) + float(Mobile_Internet.get())
+        EXPENSES+=total
+        monthly_frame.place_forget()
+        refresh_values()
+        write_db()
+        main_frame.place(x=50,y=80)
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 def add_three():
     global EXPENSES
-    EXPENSES-=float(Cylinder_Sold.get())
-    main_frame.place(x=50,y=80)
-    refresh_values()
-    write_db()
-    recovery_frame.place_forget()
-
+    try:
+        EXPENSES-=float(Cylinder_Sold.get())
+        main_frame.place(x=50,y=80)
+        refresh_values()
+        write_db()
+        recovery_frame.place_forget()
+    except Exception as e:
+        Thread(target = Show_Error, args = (e, )).start()
 
 
 fixed_frame=Frame(root,width=600,height=400,highlightbackground="blue",highlightthickness=1,background='white',relief='groove')
@@ -284,9 +332,9 @@ bg = PhotoImage(file = "bg2.png")
 useless_label = Label( main_frame, image = bg)
 useless_label.place(x = 0, y = 0)
 
-Custom_Button(main_frame,'Add Expense',add_expense_main_frame).place(x=150,y=350)
-Custom_Button(main_frame,'Add Recovery',add_recovery_main_frame).place(x=300,y=350)
-Custom_Button(main_frame,'Analysis',add_analysis_main_frame).place(x=450,y=350)
+Custom_Button(main_frame,'Add Expense',add_expense_main_frame).place(x=130,y=350)
+Custom_Button(main_frame,'Add Recovery',add_recovery_main_frame).place(x=280,y=350)
+Custom_Button(main_frame,'Analysis',add_analysis_main_frame).place(x=430,y=350)
 
 
 
@@ -312,16 +360,19 @@ Target_Cylinder_Label=Custom_Label(root,str(TARGET_CYLINDER))
 Target_Cylinder_Label.place(x=600,y=40)
 Custom_Label(root,'( Break Even Volume )').place(x=450,y=57)
 
-Custom_Label(root,'Profit per Cylinder: ').place(x=100,y=15)
+Custom_Label(root,'Profit per Cylinder: ').place(x=80,y=15)
 Profit_Per_Cylinder=Custom_Spinbox(root)
-Profit_Per_Cylinder.place(x=100,y=40)
+Profit_Per_Cylinder.place(x=80,y=40)
 Profit_Per_Cylinder.delete(0,3)
 Profit_Per_Cylinder.insert(index=0, s=str(PROFIT_PER_CYLINDER))
 
 
-Custom_Button(root,'Developers',Show_Developers).place(x=50,y=500)
+Custom_Button(root,'About',Show_About).place(x=50,y=500)
 
 Custom_Button(root,'Undo',Undo).place(x=610,y=500)
+
+Error=Custom_Label(root,'')
+Error.place(x=150,y=505)
 
 main_frame.place(x=50,y=80)
 
