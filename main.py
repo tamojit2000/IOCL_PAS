@@ -90,7 +90,7 @@ def fourth_home():
 def add_expense_main_frame():
     global DATABASE
     try:
-        if DATABASE=={}:
+        if  not os.path.exists('Database.dat'):
             main_frame.place_forget()
             fixed_frame.place(x=50,y=80)
         else:
@@ -102,7 +102,7 @@ def add_expense_main_frame():
 def add_recovery_main_frame():
     global DATABASE
     try:
-        if True:
+        if os.path.exists('Database.dat') and EXPENSES>0:
             main_frame.place_forget()
             recovery_frame.place(x=50,y=80)
     except Exception as e:
