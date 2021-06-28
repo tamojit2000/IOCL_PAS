@@ -4,7 +4,7 @@
 
 -Extra Libraries: tkvalidate ( pip install tkvalidate )
 
-# Useuage
+# Usage
 
 -Standalone is present in the Compiled folder. Download and copy the whole folder to your PC for use.
 
